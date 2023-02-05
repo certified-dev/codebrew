@@ -1,0 +1,19 @@
+
+a {
+  text-decoration: none;
+}
+
+.post-text {
+  font-size: 15px;
+}
+
+.post-text pre {
+  font-size: 13px;
+  font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
+  max-height: 500px;
+  width: auto;
+  padding: 10px;
+  background-color: #eeeeee;
+  margin-bottom: 20px;
+  border-radius: 2px;
+} 

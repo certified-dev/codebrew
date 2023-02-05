@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Snippet | Codebin{% endblock %}
+
+{% load static humanize markdown_deux_tags widget_tweaks crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row pt-4">
+    <div class="col-sm-9 mb-2">
+        <h3>{{ post.title }}</h3>
+        <p>
+            {% for tag in post.get_tags %}
+             <span class="badge rounded-pill bg-primary">
+                <a class="text-white" href="{% url 'cat_view' tag %}">{{ tag }}</a>
+            </span> 
+             {% endfor %}
+        </p>
+
+        <div class="row">
+             <div class="col-1 pt-2">
+                <img src="{% static 'img/image.jpeg' %}" class="img-fluid rounded" alt="...">
+             </div>
+             <div class="col-11">
+                <div class="row">
+                    <div class="col-12">
+                        <em>{{ post.posted_by }}</em>
+                    </div>
+                    <div class="col-12">
+                        <small class="text-muted">{{ post.created_at|naturaltime }}</small>
+                    </div>
+                </div>
+                <br>
+                
+             </div>
+        </div>
+    </div>
+    <hr>
+    <div class="col-sm-9">
+        <div class="card mb-2">
+            <div class="card-body post-text">
+                {{ post.body|markdown }}
+            </div>
+        </div>
+    </div>
+    {% if post.posted_by == user %}
+    <div class="col-sm-9 mb-2 justify-content-right">
+        <small><span><a href="{% url 'edit_post' post.pk %}">Edit</a></span></small>
+    </div>
+    {% endif %}
+
+    <div class="col-sm-9 mt-2 pt-2 bg-info">
+        <h4>{{ post.comments.count }} Responses</h4>
+    </div>
+    <div class="col-sm-9 mt-2">
+        {% for comment in comments %}
+        <div class="card mb-3">
+            <div class="card-body">
+
+                {% if comment.posted_by %}
+                <h5 class="card-title">{{ comment.posted_by }} :</h5>
+                {% elif comment.commented_by %}
+                <h5 class="card-title">{{ comment.commented_by }} :</h5>
+                {% endif %}
+
+                <p class="card-text">{{ comment.message }}</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">{{ comment.posted_on|naturaltime }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-sm-9 mt-5">
+        <form id="comment-form" method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+        </form>
+    </div>
+    <div class="col-sm-9 mt-4">
+        <input type="submit" class="btn btn-primary" value="Add comment" form="comment-form">
+    </div>
+</div>
+{% endblock %}

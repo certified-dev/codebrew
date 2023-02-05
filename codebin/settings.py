@@ -37,8 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
-    'main'
+    'pagedown',
+    'widget_tweaks',
+    'crispy_forms',
+    'markdown_deux',
+    
+    
+    'main',
+   
 ]
 
 MIDDLEWARE = [
@@ -56,7 +64,7 @@ ROOT_URLCONF = 'codebin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +76,13 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATES_LOADER = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.eggs.Loader',
+    'django.template.loaders.add_directories.load_template_source',
+)
 
 WSGI_APPLICATION = 'codebin.wsgi.application'
 
@@ -121,6 +136,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -137,4 +157,6 @@ LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
 LOGIN_REDIRECT_URL = 'home'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

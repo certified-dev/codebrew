@@ -1,9 +1,9 @@
 from django import forms
 from pagedown.widgets import PagedownWidget
 
-from main.models import Post, UserComment
+from main.models import Post, Comment
 
-CHOICES = (('python','Python'),('java','Java'),('javascript','JavaScript'))
+CHOICES = (('python','Python'),('java','Java'),('javascript','JavaScript'),('html','HTML'),('css','CSS'))
 
 
 class NewPageDownWidget(PagedownWidget):
@@ -13,7 +13,7 @@ class NewPageDownWidget(PagedownWidget):
         }
 
 class PostForm(forms.ModelForm):
-    tags = forms.ModelMultipleChoiceField(choices=[CHOICES])
+    tags = forms.MultipleChoiceField(choices=CHOICES)
 
     class Meta:
         model = Post
@@ -22,7 +22,7 @@ class PostForm(forms.ModelForm):
             'title': forms.TextInput(
                 attrs={'placeholder': 'Title of your post.'}),
             'body': NewPageDownWidget(attrs={'rows': 8,
-                                             'placeholder': 'include all the information someone would need to unserstand you post'})
+                                             'placeholder': 'include all the information someone would need to understand you post'})
         }
 
     def __init__(self, *args, **kwargs):
@@ -37,11 +37,12 @@ class UserCommentForm(forms.ModelForm):
     message = forms.CharField(widget=forms.Textarea, required=True)
 
     class Meta:
-        model = UserComment
-        field = ('message',)
+        model = Comment
+        fields = ('message',)
 
 class GuestCommentForm(forms.Form):
     name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
     message = forms.CharField(widget=forms.Textarea)
 
     class Meta:

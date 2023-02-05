@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Home | Codebin{% endblock  %}
+{% load static humanize %}
+{% block content %}
+<div class="row pt-4">
+  <div class="col mb-2">
+    {% for post in posts %}
+<table>
+    <tr>
+        <td>
+          <img src="{% static 'img/image.jpeg' %}" class="img-fluid rounded m-2" width="30" height="30" alt="...">
+            <strong>{{ post.posted_by }}</strong> says:
+        </td>
+    </tr>
+    <tr>
+       <td>
+         <a href="{% url 'post_view' post.pk %}">{{ post.title }}
+       </td>
+    </tr>
+    <tr>
+        <td>
+          <em>comments</em> : {{ post.comments.count }}   |   <em>views</em> : {{ post.views }}  |   <em>time</em> : <small class="text-muted float-right">{{ post.created_at|naturaltime }}</small>
+        </td>
+    </tr>
+    <tr>
+      <td>
+       {% for tag in post.get_tags %} 
+       <span class="badge rounded-pill bg-primary">
+        <a class="text-white" href="{% url 'cat_view' tag %}">{{ tag }}</a>
+      </span> 
+        {% endfor %}
+      </td>
+    </tr>
+</table>
+<hr>
+{% endfor %}
+
+{% endblock %}
+
+
+  </div>
+</div>
