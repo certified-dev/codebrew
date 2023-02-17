@@ -13,7 +13,7 @@
                 <form id="post-form" method="post" novalidate>
                     {{ form.media.css }}
                     {% csrf_token %}
-                    <small>{{ form|crispy }}</small>
+                    {{ form|crispy }}
                     <script src="{% static 'js/jquery.min.js' %}"></script>
                     {{ form.media.js }}
                 </form>

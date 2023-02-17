@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static widget_tweaks crispy_forms_tags %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/web-programming.ico' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}" />
+
+  <title>Login | CodeBin</title>
+</head>
+
+<body>
+    <div class="container mt-5 pt-5 mb-5">
+        <div class="row justify-content-center">
+           <div class="col-md-6 col-lg-4 col-xl-4">
+              <div class="card">
+                 <div class="card-body">
+                    <div class="text-center m-auto">
+                       <h4 class="text-uppercase text-center">Login</h4>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        {{ form| crispy }}
+                        <div class="form-group mb-0 text-center">
+                            <button class="btn btn-primary btn-block" type="submit" name="submit"> Log In </button>
+                         </div>
+                    </form>
+                 </div>
+              </div>
+           </div>
+        </div>
+      </div>
+  <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>
+

@@ -1,7 +1,36 @@
+body 
+{ 
+	background-color: White;
+    font-family: sans-serif;
+}
+
 blockquote {
 	border-left: 2px dotted #888;
 	padding-left: 5px;
 	background: #d0f0ff;
+}
+
+.wmd-panel
+{
+	margin-left: 25%;
+	margin-right: 25%;
+	width: 50%;
+	min-width: 500px;
+}
+
+.wmd-button-bar 
+{
+	width: 100%;
+	background-color: Silver; 
+}
+
+.wmd-input 
+{ 
+	height: 300px;
+	width: 100%;
+	border-top: 1px solid #ced4da;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .wmd-button-row 
