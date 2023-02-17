@@ -17,15 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name="home" ),
-    path('new', views.add_post, name="add_post"),
+    path('new/', views.add_post, name="add_post"),
     path('posts/<int:pk>', views.post_view, name="post_view"),
-    path('posts/<int:pk>/update', views.PostUpdateView.as_view(), name="edit_post"),
-    path('posts/category/<str:tag>', views.cat_view, name="cat_view")
+    path('posts/<int:pk>/update', views.edit_post, name="edit_post"),
+    path('posts/category/<str:tag>', views.cat_view, name="cat_view"),
+    path('signup/', views.register, name="signup"),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
