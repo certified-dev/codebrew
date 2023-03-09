@@ -7,7 +7,6 @@ class Post(models.Model):
     body = models.TextField(max_length=10000)
     tags = models.CharField(max_length=100)
     posted_by = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     views = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(blank=True,null=True)
@@ -44,5 +43,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.message
+
+    def get_commented_by_avatar(self):
+        email_hash = md5(str(self.email.strip().lower()).encode()).hexdigest()
+        avatar_url = "https://www.gravatar.com/avatar/%s" % email_hash + "?s=28&d=identicon&r=PG"
+        return avatar_url
 
    

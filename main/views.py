@@ -1,8 +1,10 @@
+from hashlib import md5
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse
+from django.core.paginator import Paginator
 from django.contrib.auth import login as auth_login
 
 from main.forms import GuestCommentForm, PostForm, UserCommentForm, RegistrationForm
@@ -10,11 +12,17 @@ from main.models import Post, Comment
 
 def home(request):
     posts = Post.objects.all().order_by('-created_at')
-    return render(request, 'home.html', {'posts': posts})
+    paginator = Paginator(posts, 15)
+    page_number = request.GET.get('page')
+    posts_paginator = paginator.get_page(page_number)
+    return render(request, 'home.html', {'posts': posts, 'posts_paginator': posts_paginator })
 
 
 def cat_view(request, tag):
     posts = Post.objects.filter(tags__icontains=tag)
+    paginator = Paginator(posts, 15)
+    page_number = request.GET.get('page')
+    posts_paginator = paginator.get_page(page_number)
     return render(request, 'home.html', {'posts': posts})
    
 
@@ -24,10 +32,9 @@ def register(request):
         if form.is_valid():
             form.save()
             return redirect('login')
-    else:
-        form = RegistrationForm()
-        return render(request, 'signup.html', {'form': form})
 
+    form = RegistrationForm(request.POST or None)
+    return render(request, 'signup.html', {'form': form})
 
 
 @login_required
@@ -91,5 +98,9 @@ def post_view(request, pk):
             form = UserCommentForm(request.POST or None)
         else:
             form = GuestCommentForm(request.POST or None)
+
+    paginator = Paginator(comments, 10)
+    page_number = request.GET.get('page')
+    comments_paginator = paginator.get_page(page_number)
     
     return render(request, 'post.html', {'comments':comments,'post': post,'form':form})

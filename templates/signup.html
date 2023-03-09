@@ -20,13 +20,17 @@
                     <div class="text-center m-auto">
                        <h4 class="text-uppercase text-center">Signup</h4>
                     </div>
-                    <form method="post">
+                    <form method="post" novalidate>
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ next }}">
                         {{ form| crispy }}
-                        <div class="form-group mb-0 text-center">
-                            <button class="btn btn-primary btn-block" type="submit" name="submit"> Log In </button>
+                        <div class="form-group mb-0 text-center mt-2">
+                            <button class="btn btn-primary btn-block" type="submit" name="submit">Register</button>
                          </div>
+                         <div class="text-center mt-2">
+                            <span class="text-secondary small"><em>Have an account?</em></span>
+                            <a class="text-center" href="{% url 'login' %}">Login</a>
+                        </div>
                     </form>
                  </div>
               </div>
@@ -38,4 +42,5 @@
 </body>
 
 </html>
+
 

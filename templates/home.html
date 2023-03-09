@@ -5,38 +5,124 @@
 <div class="row pt-4">
   <div class="col mb-2">
     {% for post in posts %}
-<table>
-    <tr>
-        <td>
-          <img src="{% static 'img/image.jpeg' %}" class="img-fluid rounded m-2" width="30" height="30" alt="...">
-            <strong>{{ post.posted_by }}</strong> said:
-        </td>
-    </tr>
-    <tr>
-       <td>
-         <a href="{% url 'post_view' post.pk %}">{{ post.title }}
-       </td>
-    </tr>
-    <tr>
-        <td>
-          <em>comments</em> : {{ post.comments.count }}   |   <em>views</em> : {{ post.views }}  |   <em>time</em> : <small class="text-muted float-right">{{ post.created_at|naturaltime }}</small>
-        </td>
-    </tr>
-    <tr>
-      <td>
-       {% for tag in post.get_tags %} 
-       <span class="badge rounded-pill bg-primary">
-        <a class="text-white" href="{% url 'cat_view' tag %}">{{ tag }}</a>
-      </span> 
-        {% endfor %}
-      </td>
-    </tr>
-</table>
-<hr>
-{% endfor %}
+    <table>
+        <tr>
+            <td>
+              <img src="{% static 'img/image.jpeg' %}" class="img-fluid rounded m-2" width="30" height="30" alt="...">
+                <strong>{{ post.posted_by }}</strong> said:
+            </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="{% url 'post_view' post.pk %}">{{ post.title }}
+          </td>
+        </tr>
+        <tr>
+            <td>
+              <em>comments</em> : {{ post.comments.count }}   |   <em>views</em> : {{ post.views }}  |   <em>time</em> : <small class="text-muted float-right">{{ post.created_at|naturaltime }}</small>
+            </td>
+        </tr>
+        <tr>
+          <td>
+          {% for tag in post.get_tags %} 
+          <span class="badge rounded-pill bg-primary">
+            <a class="text-white" href="{% url 'cat_view' tag %}">{{ tag }}</a>
+          </span> 
+            {% endfor %}
+          </td>
+        </tr>
+    </table>
+  <hr>
+  {% endfor %}
+
+  {% if posts_paginator.paginator.num_pages > 1 %}
+  <div class="row pl-3">
+  <div class="col pt-4 pb-4">
+      <small class="float-right">
+            <nav aria-label="List pagination" class="mb-4">
+              <ul class="pagination">
+                {% if posts_paginator.number > 1 %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">First</span>
+                  </li>
+                {% endif %}
+
+                {% if posts_paginator.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ posts_paginator.previous_page_number }}">Previous</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                  </li>
+                {% endif %}
+
+                {% for page_num in posts_paginator.paginator.page_range %}
+                  {% if posts_paginator.number == page_num %}
+                    <li class="page-item active">
+                      <span class="page-link">
+                        {{ page_num }}
+                        <span class="sr-only">(current)</span>
+                      </span>
+                    </li>
+                  {% elif page_num > posts_paginator.number|add:'-3' and page_num < posts_paginator.number|add:'3' %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if posts_paginator.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ posts_paginator.next_page_number }}">Next</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                  </li>
+                {% endif %}
+
+                {% if posts_paginator.number != posts_paginator.paginator.num_pages %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ posts_paginator.paginator.num_pages }}">Last</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Last</span>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+
+      </small>
+  </div>
+  </div>
+  {% endif %}
+
+  {% if posts_paginator.paginator.num_pages > 1 %}
+    <div class="row">
+        <div class="col mt-5 mb-3">
+          <div class="pagination float-right" style="margin-bottom: 3; margin-top: 10">
+              <span class="step-links">
+              {% if posts_paginator.has_previous %}
+                  <a href="?page={{ posts_paginator.previous_page_number }}">&laquo; previous</a>
+              {% endif %}
+
+              <span class="current text-secondary">
+                  page {{ posts_paginator.number }} of {{ posts_paginator.paginator.num_pages }}
+              </span>
+
+              {% if posts_paginator.has_next %}
+                  <a href="?page={{ posts_paginator.next_page_number }}">next &raquo;</a>
+              {% endif %}
+              </span>
+          </div>
+        </div>
+    </div>
+  {% endif %}
 
 {% endblock %}
-
-
-  </div>
-</div>

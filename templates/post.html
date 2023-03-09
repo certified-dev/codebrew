@@ -55,6 +55,13 @@
         {% for comment in comments %}
         <div class="card mb-3">
             <div class="card-body">
+                
+                {% if comment.posted_by %}
+                <img src="{% static 'img/image.jpeg' %}" class="rounded"  width="28" height="28" alt="...">
+                {% elif comment.commented_by %}
+                <img src="{{ question.asked_by }}"  class="rounded" width="28" height="28"/>
+                {% endif %}
+                
 
                 {% if comment.posted_by %}
                 <h5 class="card-title">{{ comment.posted_by }} :</h5>
@@ -62,7 +69,7 @@
                 <h5 class="card-title">{{ comment.commented_by }} :</h5>
                 {% endif %}
 
-                <p class="card-text">{{ comment.message }}</p>
+                <p class="card-text"><em>{{ comment.message }}</em></p>
             </div>
             <div class="card-footer">
                 <small class="text-muted">{{ comment.posted_on|naturaltime }}</small>
